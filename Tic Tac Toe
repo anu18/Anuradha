@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<head>
+<script type="text/javascript">
+var a;                         //for checking whether a particular canvas(box) is occupied or not.
+var b;                         //for storing which symbol("X" or"O") is entered by the user at a location.
+var w_comb;                    //array to store winning combinations.
+var turn = 0;                  //decides whose turn is it-X's or O's.  
+var theCanvas;                 //points to the canvas which is sent to the function canvasCicked().
+var c;
+var cxt;
+var squaresFilled = 0;         //keeps a count on number of boxes filled.
+
+window.onload=function(){
+a = new Array();
+b = new Array();
+w_comb = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+for(var l = 0; l <= 8; l++){
+a[l] = false;
+b[l]='';
+}
+}
+
+function canvasClicked(canvas_no){
+theCanvas = "canvas"+canvas_no;
+c = document.getElementById(theCanvas);
+cxt = c.getContext("2d");
+if(a[canvas_no-1] ==false){         //if no element is present in that particular canvas.
+if(turn%2==0){                      //if it is an even turn (1st player's turn).
+cxt.beginPath();                    
+cxt.moveTo(10,10);                  //"X" is written.
+cxt.lineTo(40,40);
+cxt.moveTo(40,10);
+cxt.lineTo(10,40);
+cxt.stroke();
+cxt.closePath();
+b[canvas_no-1] = 'X';               //"X" is stored in that particular location of array b.
+}
+else{                               //if it is an odd turn (2nd player's turn).  
+cxt.beginPath();
+cxt.arc(25,25,20,0,Math.PI*2,true); //"O" is written.
+cxt.stroke();
+cxt.closePath();
+b[canvas_no-1] = 'O';               //"O" is stored in that particular location of array b.
+}
+turn++;                             //increment of turn variable with each turn.
+a[canvas_no-1] = true;              //this indicates that this particular canvas is filled.
+squaresFilled++;                    //increases the number of boxes filled after each turn.
+checkForWinners(b[canvas_no-1]);
+if(squaresFilled==9){
+alert("THE GAME IS OVER!");
+location.reload(true);
+}
+}
+else{
+alert("THAT SPACE IS ALREADY OCCUPIED!");
+}
+}
+function checkForWinners(symbol){      //function for checking who won.
+for(var a = 0; a < w_comb.length; a++){
+if(b[w_comb[a][0]]==symbol&&b[w_comb[a][1]]== symbol&&b[w_comb[a][2]]==symbol){   //it checks whether any of the winning combinations in the array b has the sent symbol("X" or"O").
+alert(symbol+ " WON!");
+playAgain();
+}
+}
+}
+function playAgain(){              //function for asking whether the player wants to play again or not.
+y=confirm("PLAY AGAIN?");
+if(y==true){
+alert("OKAY!");
+location.reload(true);             //reloads the game.
+}
+else{
+alert("OKAY! BYE");
+}
+}
+
+
+</script>
+</head>
+<body>
+<center>
+<h1>Tic-Tac-Toe</h1>
+<canvas id="canvas1" width="50" height="50" style="border:1px solid black" onclick="canvasClicked(1)"></canvas>
+<canvas id="canvas2" width="50" height="50" style="border:1px solid black" onclick="canvasClicked(2)"></canvas>
+<canvas id="canvas3" width="50" height="50" style="border:1px solid black" onclick="canvasClicked(3)"></canvas><br/>
+<canvas id="canvas4" width="50" height="50" style="border:1px solid black" onclick="canvasClicked(4)"></canvas>
+<canvas id="canvas5" width="50" height="50" style="border:1px solid black" onclick="canvasClicked(5)"></canvas>
+<canvas id="canvas6" width="50" height="50" style="border:1px solid black" onclick="canvasClicked(6)"></canvas><br/>
+<canvas id="canvas7" width="50" height="50" style="border:1px solid black" onclick="canvasClicked(7)"></canvas>
+<canvas id="canvas8" width="50" height="50" style="border:1px solid black" onclick="canvasClicked(8)"></canvas>
+<canvas id="canvas9" width="50" height="50" style="border:1px solid black" onclick="canvasClicked(9)"></canvas>
+</center>
+</body>
+</html>
